@@ -1,0 +1,23 @@
+{
+  "name": "store-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arjunu/store-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arjunu/store-manager/issues"
+  },
+  "homepage": "https://github.com/arjunu/store-manager#readme",
+  "dependencies": {
+    "jsoneditor": "^5.13.1"
+  }
+}

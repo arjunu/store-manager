@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Store Manager</title>
+
+    <link rel="stylesheet" href="./mdl/material.min.css">
+    <script src="./mdl/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="https://bgrins.github.io/filereader.js/filereader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+
+    <link href="./jsoneditor/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <script src="./jsoneditor/jsoneditor.min.js"></script>
+
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+
+<div class="left">
+    <div id="jsoneditor" style="width: 100%; height: calc(100% - 50px);"></div>
+
+    <div class="editorControls">
+        <label class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect loadJSON">
+            Load JSON
+            <input type="file" id="loadDocument" value="Load" size="60"/>
+        </label>
+
+        <label class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            Save JSON
+            <input type="button" id="saveDocument"/>
+        </label>
+    </div>
+</div>
+
+<script src="./index.js"></script>
+
+</body>
+</html>
