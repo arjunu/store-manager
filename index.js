@@ -68,6 +68,13 @@ document.getElementById('saveDocument').onclick = function () {
   saveAs(blob, fname);
 };
 
+const makeImmutable = state => {
+  const newState = {};
+  Object.keys(state).map(key => {
+    newState[key] = Immutable.fromJS(state[key]);
+  });
+  return newState;
+};
 
 //input editor
 const inputEditor = ace.edit("editor");
@@ -78,7 +85,7 @@ const myEfficientFn = debounce(function () {
   const value = inputEditor.getSession().getValue();
   console.log(`(function (state) {${value}}`);
   try {
-    const output = window.eval.call(window, `(function (state) {${value}})`)(Immutable.fromJS(editor.get()));
+    const output = window.eval.call(window, `(function (state) {${value}})`)(makeImmutable(editor.get()));
     outputEditor.set(output);
     document.getElementById('error').innerHTML = '';
   }
