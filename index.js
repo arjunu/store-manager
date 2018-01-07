@@ -13,7 +13,7 @@ function debounce(func, wait, immediate) {
   };
 }
 
-// create the editor
+// store
 const options = {
   mode: 'tree',
   modes: ['code', 'tree'], // allowed modes
@@ -22,16 +22,10 @@ const options = {
   },
   onModeChange: function (newMode, oldMode) {
     console.log('Mode switched from', oldMode, 'to', newMode);
-  }
+  },
 };
 const editor = new JSONEditor(document.getElementById("jsoneditor"), options);
 
-const outputEditor = ace.edit("output_editor");
-outputEditor.setTheme("ace/theme/monokai");
-outputEditor.getSession().setMode("ace/mode/javascript");
-outputEditor.setReadOnly(true);
-
-// set json
 const json = {
   "Array": [1, 2, 3],
   "Boolean": true,
@@ -41,6 +35,9 @@ const json = {
   "String": "Hello World"
 };
 editor.set(json);
+
+//output
+const outputEditor = new JSONEditor(document.getElementById("output_editor"), options);
 
 // Load a JSON document
 FileReaderJS.setupInput(document.getElementById('loadDocument'), {
@@ -71,6 +68,8 @@ document.getElementById('saveDocument').onclick = function () {
   saveAs(blob, fname);
 };
 
+
+//input editor
 const inputEditor = ace.edit("editor");
 inputEditor.setTheme("ace/theme/monokai");
 inputEditor.getSession().setMode("ace/mode/javascript");
@@ -79,8 +78,8 @@ const myEfficientFn = debounce(function () {
   const value = inputEditor.getSession().getValue();
   console.log(`(function (state) {${value}}`);
   try {
-    const output = window.eval.call(window, `(function (state) {${value}})`)(editor.get());
-    outputEditor.setValue(JSON.stringify(output, null, 2));
+    const output = window.eval.call(window, `(function (state) {${value}})`)(Immutable.fromJS(editor.get()));
+    outputEditor.set(output);
     document.getElementById('error').innerHTML = '';
   }
   catch (e) {
