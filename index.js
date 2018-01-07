@@ -1,6 +1,21 @@
+function debounce(func, wait, immediate) {
+  let timeout;
+  return function() {
+    const context = this, args = arguments;
+    const later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}
+
 // create the editor
-var container = document.getElementById("jsoneditor");
-var options = {
+const container = document.getElementById("jsoneditor");
+const options = {
   mode: 'tree',
   modes: ['code', 'tree'], // allowed modes
   onError: function (err) {
@@ -10,10 +25,10 @@ var options = {
     console.log('Mode switched from', oldMode, 'to', newMode);
   }
 };
-var editor = new JSONEditor(container, options);
+const editor = new JSONEditor(container, options);
 
 // set json
-var json = {
+const json = {
   "Array": [1, 2, 3],
   "Boolean": true,
   "Null": null,
@@ -22,9 +37,6 @@ var json = {
   "String": "Hello World"
 };
 editor.set(json);
-
-// get json
-// var json = editor.get();
 
 // Load a JSON document
 FileReaderJS.setupInput(document.getElementById('loadDocument'), {
@@ -35,21 +47,34 @@ FileReaderJS.setupInput(document.getElementById('loadDocument'), {
     }
   }
 });
+
 // Save a JSON document
 document.getElementById('saveDocument').onclick = function () {
   // Save Dialog
-  fname = window.prompt("Save as...");
+  let fname = window.prompt("Save as...");
 
   // Check json extension in file name
-  if(fname.indexOf(".")==-1){
+  if (fname.indexOf(".") === -1) {
     fname = fname + ".json";
-  }else{
-    if(fname.split('.').pop().toLowerCase() == "json"){
+  } else {
+    if (fname.split('.').pop().toLowerCase() === "json") {
       // Nothing to do
-    }else{
+    } else {
       fname = fname.split('.')[0] + ".json";
     }
   }
-  var blob = new Blob([editor.getText()], {type: 'application/json;charset=utf-8'});
+  const blob = new Blob([editor.getText()], {type: 'application/json;charset=utf-8'});
   saveAs(blob, fname);
 };
+
+const inputEditor = ace.edit("editor");
+inputEditor.setTheme("ace/theme/monokai");
+inputEditor.getSession().setMode("ace/mode/javascript");
+
+const myEfficientFn = debounce(function() {
+  const value = inputEditor.getSession().getValue();
+  console.log(`(function (state) {${value}}`);
+  console.log(window.eval.call(window,`(function (state) {${value}})`)(json));
+}, 500);
+
+inputEditor.getSession().on('change', myEfficientFn);

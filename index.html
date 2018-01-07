@@ -18,6 +18,8 @@
     <script src="./jsoneditor/jsoneditor.min.js"></script>
 
     <link rel="stylesheet" href="./style.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 </head>
 <body>
 
@@ -34,6 +36,15 @@
             Save JSON
             <input type="button" id="saveDocument"/>
         </label>
+    </div>
+</div>
+
+<div class="right">
+    <div class="output">
+    </div>
+    <div id="editor" class="editor">state => {
+  return {};
+};
     </div>
 </div>
 

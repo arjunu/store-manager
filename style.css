@@ -47,14 +47,29 @@ body {
 .left {
   width: 50%;
   height: 100%;
+  float: left;
 }
 
 .editorControls {
   text-align: center;
-  height: 50px;
+  height: 30px;
   padding: 7px;
 }
 
 .loadJSON {
   margin-right: 16px;
+}
+
+.right {
+  float: right;
+  height: 100%;
+  width: 50%;
+}
+
+.editor {
+  height: 50%;
+}
+
+.output {
+  height: 50%;
 }
