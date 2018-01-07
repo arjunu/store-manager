@@ -73,3 +73,15 @@ body {
 .output {
   height: 50%;
 }
+
+#output_editor {
+  height: calc(100% - 48px);
+}
+
+#error {
+  height: 48px;
+  color: #d20404;
+  padding: 16px;
+  background: #30312a;
+  border: 1px solid #202020;
+}

@@ -1,8 +1,8 @@
 function debounce(func, wait, immediate) {
   let timeout;
-  return function() {
+  return function () {
     const context = this, args = arguments;
-    const later = function() {
+    const later = function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     };
@@ -14,7 +14,6 @@ function debounce(func, wait, immediate) {
 }
 
 // create the editor
-const container = document.getElementById("jsoneditor");
 const options = {
   mode: 'tree',
   modes: ['code', 'tree'], // allowed modes
@@ -25,7 +24,12 @@ const options = {
     console.log('Mode switched from', oldMode, 'to', newMode);
   }
 };
-const editor = new JSONEditor(container, options);
+const editor = new JSONEditor(document.getElementById("jsoneditor"), options);
+
+const outputEditor = ace.edit("output_editor");
+outputEditor.setTheme("ace/theme/monokai");
+outputEditor.getSession().setMode("ace/mode/javascript");
+outputEditor.setReadOnly(true);
 
 // set json
 const json = {
@@ -71,10 +75,17 @@ const inputEditor = ace.edit("editor");
 inputEditor.setTheme("ace/theme/monokai");
 inputEditor.getSession().setMode("ace/mode/javascript");
 
-const myEfficientFn = debounce(function() {
+const myEfficientFn = debounce(function () {
   const value = inputEditor.getSession().getValue();
   console.log(`(function (state) {${value}}`);
-  console.log(window.eval.call(window,`(function (state) {${value}})`)(json));
+  try {
+    const output = window.eval.call(window, `(function (state) {${value}})`)(editor.get());
+    outputEditor.setValue(JSON.stringify(output, null, 2));
+    document.getElementById('error').innerHTML = '';
+  }
+  catch (e) {
+    document.getElementById('error').innerHTML = e;
+  }
 }, 500);
 
 inputEditor.getSession().on('change', myEfficientFn);
